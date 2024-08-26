@@ -1,5 +1,5 @@
 
-# Classification_Training_Drone_Audio_Detection
+# Drone_Audio_Detection
 
 
 - **Requirements**: 
@@ -94,16 +94,16 @@ model = models.Sequential([
     - metrics=['accuracy']
 
 ### Preprocess
-#### Folder: `Classification_Training_Drone_Audio_Detection/pre-process-code`
+#### Folder: `Drone_Audio_Detection/pre-process-code`
 
 When you get a new dataset, pre-process the data with the following order to prepare it for training:
 
 1. **Copy the original data in the root of .git:**
-   - `Classification_Training_Drone_Audio_Detection`
-   - e.g., folder `Classification_Training_Drone_Audio_Detection/data_mp3`
+   - `Drone_Audio_Detection`
+   - e.g., folder `Drone_Audio_Detection/data_mp3`
 
 2. **Change folder_name in file:**
-   - `Classification_Training_Drone_Audio_Detection/pre-process-code/file_with_folder_name.json`
+   - `Drone_Audio_Detection/pre-process-code/file_with_folder_name.json`
    - e.g., `"folder_name": "../data_mp3"`
 
 3. If the data are in mp3, convert them to .wav:
@@ -122,7 +122,7 @@ When you get a new dataset, pre-process the data with the following order to pre
    - `make_mfcc.py`
 
 ### Labeling
-#### Folder: `Classification_Training_Drone_Audio_Detection/pre-process-code/for_labels`
+#### Folder: `Drone_Audio_Detection/pre-process-code/for_labels`
 
 For each signal.csv, create a label.csv with values: `'drone'` or `'not_drone'`.
 
@@ -144,10 +144,10 @@ For each signal.csv, create a label.csv with values: `'drone'` or `'not_drone'`.
     - `copy_data_to_dataset.py`
 
 ### Overfitting (optional)
-#### Folder: `Classification_Training_Drone_Audio_Detection/overfitting`
+#### Folder: `Drone_Audio_Detection/overfitting`
 
 1. **Change folder_name in file:**
-   - `Classification_Training_Drone_Audio_Detection/overfitting/file_with_folder_name.json`
+   - `Drone_Audio_Detection/overfitting/file_with_folder_name.json`
    - e.g., `"folder_name": "../data_mp3"`
 
 2. Create folders for extra data:
