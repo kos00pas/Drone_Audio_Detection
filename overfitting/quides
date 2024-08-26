@@ -1,0 +1,16 @@
+*. create_noise_folder_n_copy_files.py
+
+*. delete_noise_mfcc.py
+
+
+
+* make_signal_noise.py
+* delete_original_signal.py
+* rename_signal_noise_to_signal.py
+* make_mfcc.py
+
+
+* make_mfcc_label_csv_noise.py
+* copy mfccs_labels
+* delete_lines_with_string.py
+
