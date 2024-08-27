@@ -1,7 +1,10 @@
 *.h5
 *.keras
 *.tflite
+!Convert_to_tflite/trained_model_all_no_pitch_no_wind.tflite
 *.pkl
+*.png
+!confuctionMatrix.png
 FINISHED_V7/*
 !FINISHED_V7/ours
 !FINISHED_V7/ours_2
