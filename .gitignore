@@ -2,7 +2,6 @@
 *.keras
 *.tflite
 *.pkl
-*.png
 FINISHED_V7/*
 !FINISHED_V7/ours
 !FINISHED_V7/ours_2
