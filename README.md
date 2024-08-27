@@ -1,5 +1,18 @@
 
 # Drone_Audio_Detection
+- [Drone_Audio_Detection](#droneaudiodetection)
+  - [Pre-Process, Labeling of Data & Overfitting](#preprocess-labeling-of-data--overfitting)
+    - [Dataset](#dataset)
+  - [Architecture of CNN](#architecture-of-cnn)
+    - [Hyperparameters](#hyperparameters)
+  - [Preprocess](#preprocess)
+    - [Labeling](#labeling)
+    - [Overfitting (optional)](#overfitting-optional)
+  - [Training](#training)
+  - [Testing](#testing)
+    - [Create Test Dataset](#create-test-dataset)
+  - [Get Details for Performance](#get-details-for-performance)
+  - [Convert model to Raspberry Pi](#convert-model-to-raspberry-pi)
 
 
 - **Requirements**: 
@@ -24,6 +37,8 @@ To install these dependencies:
 
 ```bash
 pip install numpy==1.26.4 pandas==2.2.2 scipy==1.13.1 matplotlib==3.9.1 seaborn==0.13.2 h5py==3.11.0 tensorflow==2.17.0 scikit-learn==1.5.1 librosa==0.10.2.post1 pydub==0.25.1 soundfile==0.12.1
+git clone https://github.com/kos00pas/Drone_Audio_Detection.git
+cd Drone_Audio_Detection
 ```
 
 ## Pre-Process, Labeling of Data & Overfitting  
@@ -87,119 +102,150 @@ model = models.Sequential([
 ```
 
 ### Hyperparameters
-- Running `hyperparameters/find_hypr.py` we find that the best parameters are: 
-    - epochs=10
-    - optimizer='adam' (default learning rate of 0.001)
-    - loss='binary_crossentropy'
-    - metrics=['accuracy']
 
-### Preprocess
+- By running `hyperparameters/find_hypr.py`, the optimal parameters were determined to be:
+  - `epochs=10`
+  - `optimizer='adam'` (with a default learning rate of 0.001)
+  - `loss='binary_crossentropy'`
+  - `metrics=['accuracy']`
+
+
+## Preprocess
+
 #### Folder: `Drone_Audio_Detection/pre-process-code`
 
-When you get a new dataset, pre-process the data with the following order to prepare it for training:
+When you receive a new dataset, pre-process the data in the following order to prepare it for training:
 
-1. **Copy the original data in the root of .git:**
-   - `Drone_Audio_Detection`
-   - e.g., folder `Drone_Audio_Detection/data_mp3`
+1. **Copy the original data to the root of the repository**:
+   - Place it in the `Drone_Audio_Detection` directory.
+   - Example: `Drone_Audio_Detection/data_mp3`
 
-2. **Change folder_name in file:**
-   - `Drone_Audio_Detection/pre-process-code/file_with_folder_name.json`
-   - e.g., `"folder_name": "../data_mp3"`
+2. **Update the `folder_name` in the configuration file**:
+   - Modify `Drone_Audio_Detection/pre-process-code/file_with_folder_name.json`
+   - Example: `"folder_name": "../data_mp3"`
 
-3. If the data are in mp3, convert them to .wav:
-   - `convertion_mp3_wav.py`
+3. **Convert mp3 files to .wav (if necessary)**:
+   - Use `convertion_mp3_wav.py`
 
-4. Convert data to sample rate -> 16kHz:
-   - `resampling.py`
+4. **Resample the data to a 16kHz sample rate**:
+   - Run `resampling.py`
 
-5. Split the data in 1sec duration:
-   - `splitting.py`
+5. **Split the data into 1-second segments**:
+   - Use `splitting.py`
 
-6. Create a directory for each 1 sec to contain:
-   1. `signal.csv` (16000,1), dtype=np.int16 based on recording of respeaker dtype:float32
-   2. `mfcc.csv` for training model
-   - `create_signal_csv.py`
-   - `make_mfcc.py`
+6. **Create a directory for each 1-second segment containing**:
+   1. `signal.csv` (16000, 1), dtype=np.int16 based on recording of respeaker, dtype: float32
+   2. `mfcc.csv` for training the model:
+      - Generate with `create_signal_csv.py`
+      - Generate with `make_mfcc.py`
+
+
 
 ### Labeling
+
 #### Folder: `Drone_Audio_Detection/pre-process-code/for_labels`
 
-For each signal.csv, create a label.csv with values: `'drone'` or `'not_drone'`.
+For each `signal.csv`, create a corresponding `label.csv` with values: `'drone'` or `'not_drone'`.
 
-1. Take all paths:
-   - `take_paths.py`
+1. **Gather all paths**:
+   - Run `take_paths.py`
 
-2. Split the paths of drones/not_drones and save them in folders:
-    - `all_drones.csv` for drone
-    - `all_not_drone.csv` for not_drone
+2. **Split the paths of drones and not_drones, then save them into folders**:
+   - Generate `all_drones.csv` for drone paths.
+   - Generate `all_not_drone.csv` for not_drone paths.
 
-3. Create labels when you have created `all_drones.csv` & `all_not_drone.csv`: 
-    - `make_drone_labels_csv.py`
-    - `make_not_drone_labels_csv.py`
+3. **Create labels after generating `all_drones.csv` and `all_not_drone.csv`**:
+   - Use `make_drone_labels_csv.py`
+   - Use `make_not_drone_labels_csv.py`
 
-4. Check if all data have labels:
-    - `check_to_all_for_label_csv.py`
+4. **Verify that all data have corresponding labels**:
+   - Run `check_to_all_for_label_csv.py`
 
-5. Copy the new data to the directory that contains every dataset:
-    - `copy_data_to_dataset.py`
+5. **Copy the newly labeled data to the directory containing all datasets**:
+   - Use `copy_data_to_dataset.py`
+
+
+
 
 ### Overfitting (optional)
+
 #### Folder: `Drone_Audio_Detection/overfitting`
 
-1. **Change folder_name in file:**
-   - `Drone_Audio_Detection/overfitting/file_with_folder_name.json`
-   - e.g., `"folder_name": "../data_mp3"`
+1. **Update the `folder_name` in the configuration file**:
+   - Modify `Drone_Audio_Detection/overfitting/file_with_folder_name.json`
+   - Example: `"folder_name": "../data_mp3"`
 
-2. Create folders for extra data:
-   - `create_noise_folder_n_copy_files.py`
+2. **Create folders for extra data**:
+   - Use `create_noise_folder_n_copy_files.py`
 
-3. Delete mfcc from _noise folder to create a new one for each overfitting decision:
-   - `delete_noise_mfcc.py`
+3. **Delete existing MFCC files from the _noise folder to create new ones for each overfitting scenario**:
+   - Use `delete_noise_mfcc.py`
 
-4. Create `signal.csv` for each _noise:
-   - `make_signal_noise.py`
+4. **Generate `signal.csv` for each _noise folder**:
+   - Use `make_signal_noise.py`
 
-5. Delete original signal because we have another from `make_signal_noise.py`:
-   - `delete_original_signal.py`
+5. **Delete the original signal files since new ones are created by `make_signal_noise.py`**:
+   - Use `delete_original_signal.py`
 
-6. Rename signal noise to signal:
-   - `rename_signal_noise_to_signal.py`
+6. **Rename signal noise files to signal**:
+   - Use `rename_signal_noise_to_signal.py`
 
-7. Make `mfcc.csv` for all overfitting data:
-   - `make_mfcc.py`
+7. **Generate `mfcc.csv` for all overfitting data**:
+   - Use `make_mfcc.py`
 
-## Training  
-#### Folder: `Create_Dataset_and_train`
-   - `make_make_mfcc_labels.py`
-     - output: `/mfcc_labels_{folder_name}.csv`
-   - `saveh5.py`
-     - output: `{folder_name}/train_dataset.h5`, `{folder_name}/val_dataset.h5`  , `{folder_name}/test_dataset.h5` . 
-   - `loadh5.py`
-     - output: `{folder_name}/trained_model_{folder_name}.keras`, `model12_{folder_name}.weights.h5')`, `{folder_name}/history_{folder_name}.pkl` .
 
-- *if you want to create multiple dataset to compare them,make a new folder, copy `the mfcc_labels<name>.csv` and  then you can delete it some files or append new.
-To delete can be done with:
-   - `delete_lines_with_string.py` 
+## Training
+
+### Folder: `Create_Dataset_and_train`
+
+- `make_make_mfcc_labels.py`
+  - Output: `/mfcc_labels_{folder_name}.csv`
+- `saveh5.py`
+  - Output: `{folder_name}/train_dataset.h5`, `{folder_name}/val_dataset.h5`, `{folder_name}/test_dataset.h5`
+- `loadh5.py`
+  - Output: `{folder_name}/trained_model_{folder_name}.keras`, `model12_{folder_name}.weights.h5`, `{folder_name}/history_{folder_name}.pkl`
+
+- **Note**: If you want to create multiple datasets for comparison:
+  - Make a new folder, copy the `mfcc_labels<name>.csv` file, and then delete or append data as needed.
+  - To delete specific entries, use:
+    - `delete_lines_with_string.py`
 
 ## Testing
-## Create test dataset
-#### Folder:  `create_test_dataset`
-  - To get the dataset data in order to test you model:
-    - `make_TEST_mfcc_labels.py` ,
-      - appends data from e.g. `base_path = '../FINISHED_V7/ours_3'` to `output_file = 'mfcc_labels.csv'`
-  - if you want to delete folders from `mfcc_labels.csv` , use : 
-    - `delete_lines_with_string.py`,  set the variable `string_to_delete` to the string you want to delete
-  - To create the `.h5` dataset :
-    - `create_test_Dataset.v2.py`
-      - using data from `labels_file_path = 'mfcc_labels.csv'`
+
+### Create Test Dataset
+
+#### Folder: `create_test_dataset`
+
+- To generate the dataset for testing your model:
+  - Use `make_TEST_mfcc_labels.py`:
+    - This script appends data from a specified path, e.g., `base_path = '../FINISHED_V7/ours_3'`, to `output_file = 'mfcc_labels.csv'`.
+- If you need to remove specific folders from `mfcc_labels.csv`, use:
+  - `delete_lines_with_string.py`:
+    - Set the `string_to_delete` variable to the string that matches the lines you want to delete.
+- To create the `.h5` dataset:
+  - Use `create_test_Dataset.v2.py`:
+    - This script generates the dataset using data from `labels_file_path = 'mfcc_labels.csv'`.
 
 
-## Get details for performance
-#### Folder : `Compare`
-  - To get the confusion matrix through a testing dataset :
-    - `get_details.py`, add to the  variable `models_folder_names` , the folder location that model can found in `Create_Dataset_and_train` in folder.  
-![My Image](./confuctionMatrix.png)
+## Get Details for Performance
 
+#### Folder: `Compare`
+
+- To get the confusion matrix using a testing dataset:
+  - In `get_details.py`, add the folder location of the model to the `models_folder_names` variable. The model's folder can be found in the `Create_Dataset_and_train` folder.
+- I ran `get_details.py` using our recording as the test dataset and compared various datasets to determine the optimal performance.
+- Datasets:
+
+| Model                    | Correct Sum (TP + TN) | False Sum (FP + FN) |
+|--------------------------|-----------------------|---------------------|
+| All without ours3        | 4501                  | 846                 |
+| All                      | 5035                  | 312                 |
+| All wind without pitch   | 5067                  | 280                 |
+| **all_no_pitch_no_wind** | **5103**              | **244**             |
+
+![Confusion Matrix Comparison](./confuctionMatrix.png)
 
 
 ## Convert model to Raspberry Pi
+#### Folder:  `Convert_to_tflite`
+- add to folder the `.keras` models you want to convert and run the  `convert.py` to take the `.tflite`
