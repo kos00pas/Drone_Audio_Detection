@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/A_data" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/B_data" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/C_data" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/Dregon" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/Drone-detection-dataset" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/DroneAudioDataset" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/DroneNoiseDatabase" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/DronePrint" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/all_drone_noises" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/drone-audio-detection" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/esc_data" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/unknown" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/wind_data" />
+      <excludeFolder url="file://$MODULE_DIR$/FINISHED_V7/youtube" />
+    </content>
     <orderEntry type="jdk" jdkName="doa_env" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
