@@ -13,6 +13,7 @@
     - [Create Test Dataset](#create-test-dataset)
   - [Get Details for Performance](#get-details-for-performance)
   - [Convert model to Raspberry Pi](#convert-model-to-raspberry-pi)
+  - [Last step]
 
 
 - **Requirements**: 
@@ -249,3 +250,6 @@ For each `signal.csv`, create a corresponding `label.csv` with values: `'drone'`
 ## Convert model to Raspberry Pi
 #### Folder:  `Convert_to_tflite`
 - add to folder the `.keras` models you want to convert and run the  `convert.py` to take the `.tflite`
+
+## Last step 
+- from folder `Convert_to_tflite ` take the .tflite model you want to run on RaspberryPi and copy it to the repository doa_raspb: `https://github.com/kos00pas/doa_raspb.git`
